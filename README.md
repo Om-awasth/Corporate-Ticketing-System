@@ -1,84 +1,103 @@
-🎫 Corporate Helpdesk Ticketing System
+# 🎫 Corporate Helpdesk Ticketing System
 
 A Full-Stack MERN Application for Managing IT Support Tickets
 
-🚀 Overview
+------------------------------------------------------------------------
 
-The Corporate Helpdesk Ticketing System is a full-stack web application designed to streamline IT support operations within an organization. It allows employees to raise issues and enables admins to manage, assign, and resolve them efficiently.
+## 🚀 Overview
+
+The **Corporate Helpdesk Ticketing System** is a full-stack web
+application designed to streamline IT support operations within an
+organization. It allows employees to raise issues and enables admins to
+manage, assign, and resolve them efficiently.
 
 This project demonstrates:
 
-• Full-stack development using MERN
-• Authentication & Authorization using JWT
-• RESTful API design
-• Role-based access control
-• Ticket lifecycle management
+-   Full-stack development using MERN\
+-   Authentication & Authorization using JWT\
+-   RESTful API design\
+-   Role-based access control\
+-   Ticket lifecycle management
 
 Developed as part of:
 
-• Course: Full Stack Development
-• Institution: SRM University – AP
-• Academic Year: 2025–26
+-   Course: Full Stack Development\
+-   Institution: SRM University -- AP\
+-   Academic Year: 2025--26
 
-✨ Key Features
-🔐 Authentication & Security
+------------------------------------------------------------------------
 
-• User Registration (Employee role)
-• Secure Login with JWT
-• Protected Routes
-• Role-based Access (Admin / Employee)
+## ✨ Key Features
 
-🎟️ Ticket Management
+### 🔐 Authentication & Security
 
-• Create support tickets
-• View personal tickets (Employee)
-• View all tickets (Admin)
-• Update ticket status: Open → In Progress → Resolved
-• Priority levels: Low / Medium / High
-• Ticket assignment by Admin
+-   User Registration (Employee role)\
+-   Secure Login with JWT\
+-   Protected Routes\
+-   Role-based Access (Admin / Employee)
 
-📊 Dashboard
+### 🎟️ Ticket Management
 
-• Employee dashboard (personal tickets)
-• Admin dashboard (all tickets)
-• Status-based filtering
-• Statistics overview
+-   Create support tickets\
+-   View personal tickets (Employee)\
+-   View all tickets (Admin)\
+-   Update ticket status: Open → In Progress → Resolved\
+-   Priority levels: Low / Medium / High\
+-   Ticket assignment by Admin
 
-🎨 User Interface
+### 📊 Dashboard
 
-• Responsive design using Tailwind CSS
-• Form validation (Formik & Yup)
-• Toast notifications
-• Loading states
+-   Employee dashboard (personal tickets)\
+-   Admin dashboard (all tickets)\
+-   Status-based filtering\
+-   Statistics overview
 
-🛠️ Tech Stack
-🌐 Frontend
+### 🎨 User Interface
 
-• React 18
-• Vite
-• React Router
-• Axios
-• Tailwind CSS
-• Formik & Yup
-• React Toastify
+-   Responsive design using Tailwind CSS\
+-   Form validation (Formik & Yup)\
+-   Toast notifications\
+-   Loading states
 
-⚙️ Backend
+------------------------------------------------------------------------
 
-• Node.js
-• Express.js
-• MongoDB
-• Mongoose
-• JWT
-• Bcrypt
+## 🛠️ Tech Stack
 
-⚙️ System Workflow
-User registers or logs in
-Employee creates a ticket
-Ticket is stored in MongoDB
-Admin views and assigns tickets
-Ticket status updates step-by-step
-Users track progress via dashboard
-📂 Project Structure
+### 🌐 Frontend
+
+-   React 18\
+-   Vite\
+-   React Router\
+-   Axios\
+-   Tailwind CSS\
+-   Formik & Yup\
+-   React Toastify
+
+### ⚙️ Backend
+
+-   Node.js\
+-   Express.js\
+-   MongoDB\
+-   Mongoose\
+-   JWT\
+-   Bcrypt
+
+------------------------------------------------------------------------
+
+## ⚙️ System Workflow
+
+1.  User registers or logs in\
+2.  Employee creates a ticket\
+3.  Ticket is stored in MongoDB\
+4.  Admin views and assigns tickets\
+5.  Ticket status updates step-by-step\
+6.  Users track progress via dashboard
+
+------------------------------------------------------------------------
+
+## 📂 Project Structure
+
+``` bash
 .
 ├── frontend/                 # React frontend (Vite)
 │   ├── src/
@@ -100,89 +119,149 @@ Users track progress via dashboard
     ├── config/              # DB configuration
     ├── server.js            # Entry point
     └── package.json
-🔌 API Endpoints
-🔑 Authentication
+```
 
-POST /api/auth/register → Register user
-POST /api/auth/login → Login user
+------------------------------------------------------------------------
+
+## 🔌 API Endpoints
+
+### 🔑 Authentication
+
+POST /api/auth/register → Register user\
+POST /api/auth/login → Login user\
 GET /api/auth/me → Get current user
 
-🎟️ Tickets
+### 🎟️ Tickets
 
-POST /api/tickets → Create ticket
-GET /api/tickets → Get all / personal tickets
-GET /api/tickets/:id → Get single ticket
-PUT /api/tickets/:id → Update ticket
-DELETE /api/tickets/:id → Delete ticket
+POST /api/tickets → Create ticket\
+GET /api/tickets → Get all / personal tickets\
+GET /api/tickets/:id → Get single ticket\
+PUT /api/tickets/:id → Update ticket\
+DELETE /api/tickets/:id → Delete ticket\
 GET /api/tickets/my-tickets → Get user tickets
 
-📝 Ticket Updates
+### 📝 Ticket Updates
 
-POST /api/ticket-updates/:ticketId → Add update
+POST /api/ticket-updates/:ticketId → Add update\
 GET /api/ticket-updates/:ticketId → Get updates
 
-📦 Installation & Usage
-🧩 Clone Repository
+------------------------------------------------------------------------
+
+## 📦 Installation & Usage
+
+### 🧩 Clone Repository
+
+``` bash
 git clone <your-repo-link>
 cd Corporate-Ticketing-System
-⚙️ Backend Setup
+```
+
+### ⚙️ Backend Setup
+
+``` bash
 cd backend
 npm install
 npm run dev
+```
 
 Runs on: http://localhost:5000
 
-🌐 Frontend Setup
+### 🌐 Frontend Setup
+
+``` bash
 cd frontend
 npm install
 npm run dev
+```
 
 Runs on: http://localhost:3000
 
-🔐 Environment Variables
-Backend (.env)
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/helpdesk
-JWT_SECRET=your_jwt_secret_key
-JWT_EXPIRE=7d
-NODE_ENV=development
-Frontend (.env)
-VITE_API_URL=http://localhost:5000/api
-📘 Concepts Demonstrated
-🧱 Full Stack Development
+------------------------------------------------------------------------
 
-• MERN Architecture
-• API Integration
+## 🔐 Environment Variables
 
-🔐 Security
+### Backend (.env)
 
-• JWT Authentication
-• Password hashing with Bcrypt
+    PORT=5000
+    MONGODB_URI=mongodb://localhost:27017/helpdesk
+    JWT_SECRET=your_jwt_secret_key
+    JWT_EXPIRE=7d
+    NODE_ENV=development
 
-📊 System Design
+### Frontend (.env)
 
-• Role-based access control
-• Ticket lifecycle management
+    VITE_API_URL=http://localhost:5000/api
 
-🎨 Frontend Engineering :
-• Component-based architecture
-• State management (Context API)
-• Form validation
+------------------------------------------------------------------------
 
-👥 Team Members :
-Name	Registration No.
-Om Awasthi	AP24110010284
-Om Mittal	AP24110010404
-Piyush Raj	AP24110010439
-Suryansh Kumar	AP24110010446
+## 📘 Concepts Demonstrated
 
-📝 Conclusion :
-This project demonstrates a real-world full-stack system with secure authentication, structured backend, and efficient ticket handling.
+### 🧱 Full Stack Development
 
-🔮 Future Enhancements :
-• Email notifications
-• File attachments
-• Advanced filtering & pagination
-• Admin analytics dashboard
-• User profile management
-• Email verification
+-   MERN Architecture\
+-   API Integration
+
+### 🔐 Security
+
+-   JWT Authentication\
+-   Password hashing with Bcrypt
+
+### 📊 System Design
+
+-   Role-based access control\
+-   Ticket lifecycle management
+
+### 🎨 Frontend Engineering
+
+-   Component-based architecture\
+-   State management (Context API)\
+-   Form validation
+
+------------------------------------------------------------------------
+
+## 👥 Team Members (SRM University AP)
+
+  Name             Registration No.
+  ---------------- ------------------
+  Om Awasthi       AP24110010284
+  Om Mittal        AP24110010404
+  Piyush Raj       AP24110010439
+  Suryansh Kumar   AP24110010446
+
+------------------------------------------------------------------------
+
+## 📝 Conclusion
+
+This project demonstrates a real-world full-stack system with secure
+authentication, structured backend, and efficient ticket handling.
+
+------------------------------------------------------------------------
+
+## 🔮 Future Enhancements
+
+-   Email notifications\
+-   File attachments\
+-   Advanced filtering & pagination\
+-   Admin analytics dashboard\
+-   User profile management\
+-   Email verification
+
+------------------------------------------------------------------------
+
+# 🔥 Summary
+
+-   MERN stack project\
+-   JWT-based authentication\
+-   Role-based system\
+-   Ticket lifecycle management\
+-   Clean UI + scalable backend
+
+------------------------------------------------------------------------
+
+## 🧠 Key Connections (For Viva)
+
+-   JWT → Authentication → Secure APIs\
+-   MongoDB → Stores users & tickets\
+-   React → UI rendering\
+-   Express → Backend API layer\
+-   Role-based logic → Real-world system design
