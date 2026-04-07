@@ -106,12 +106,30 @@ This project demonstrates real-world concepts of:
 
 ---
 
-## 📂 Project Structure  
+## 📂 Project Structure
 
-```bash
-📁 Corporate-Ticketing-System
- ├── frontend/
- ├── backend/
+``` bash
+.
+├── frontend/                 # React frontend (Vite)
+│   ├── src/
+│   │   ├── components/      # Reusable UI components
+│   │   ├── pages/           # Page-level components
+│   │   ├── services/        # API calls (Axios)
+│   │   ├── context/         # Global state (Auth)
+│   │   ├── utils/           # Helper functions
+│   │   ├── App.jsx          # Main app component
+│   │   └── main.jsx         # Entry point
+│   ├── package.json
+│   └── vite.config.js
+│
+└── backend/                  # Node.js + Express backend
+    ├── models/              # MongoDB schemas
+    ├── controllers/         # Business logic
+    ├── routes/              # API endpoints
+    ├── middleware/          # Auth & error handling
+    ├── config/              # DB configuration
+    ├── server.js            # Entry point
+    └── package.json
 ```
 
 ---
