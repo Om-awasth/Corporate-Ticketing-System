@@ -25,7 +25,7 @@ This project demonstrates real-world concepts of:
 - Ticket lifecycle management  
 
 - **Course:** Full Stack Development  
-- **Institution:** SRM University – AP  
+- **Institution:** SRM University AP  
 - **Academic Year:** 2025–26  
 
 ---
@@ -187,7 +187,7 @@ npm run dev
 
 ## 📝 Conclusion  
 
-This project demonstrates a real-world full-stack system with secure authentication, structured backend, and efficient ticket handling.  
+This project demonstrates a real world full stack system with secure authentication, structured backend, and efficient ticket handling.  
 
 ---
 
@@ -195,5 +195,5 @@ This project demonstrates a real-world full-stack system with secure authenticat
 
 - MERN stack project  
 - JWT-based authentication  
-- Role-based system  
+- Role based system  
 - Ticket lifecycle management  
