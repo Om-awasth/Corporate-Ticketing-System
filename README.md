@@ -1,135 +1,155 @@
-# Corporate Helpdesk Ticketing System
+# Corporate Helpdesk Ticketing System 🎫
 
-A Full-Stack MERN Application for Managing IT Support Tickets  
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![React](https://img.shields.io/badge/frontend-React-61DAFB?logo=react&logoColor=black)
+![Node.js](https://img.shields.io/badge/backend-Node.js-339933?logo=nodedotjs&logoColor=white)
+![MongoDB](https://img.shields.io/badge/database-MongoDB-47A248?logo=mongodb&logoColor=white)
+![Tailwind](https://img.shields.io/badge/styling-Tailwind_CSS-06B6D4?logo=tailwindcss&logoColor=white)
 
----
-
-## 🚀 Overview  
-
-The **Corporate Helpdesk Ticketing System** is a full-stack web application designed to streamline IT support operations within an organization. It allows employees to raise issues and enables admins to manage, assign, and resolve them efficiently.  
-
-Unlike traditional manual or email-based systems, this project provides:  
-
-- Structured ticket management  
-- Secure authentication system  
-- Role-based access control  
-- Real-time status tracking  
-- Scalable backend architecture  
-
-This project demonstrates real-world concepts of:  
-
-- Full-stack development using MERN  
-- Authentication & Authorization using JWT  
-- RESTful API design  
-- Role-based system design  
-- Ticket lifecycle management  
-
-- **Course:** Full Stack Development  
-- **Institution:** SRM University AP  
-- **Academic Year:** 2025–26  
+A Full-Stack MERN Application for Managing IT Support Tickets with an integrated Machine Learning priority prediction system.
 
 ---
 
-## ✨ Key Features  
+## 🚀 Overview
 
-### 🔹 1. Authentication & Security  
+The **Corporate Helpdesk Ticketing System** is a full-stack web application designed to streamline IT support operations within an organization. It allows employees to raise issues and enables admins to manage, assign, and resolve them efficiently.
 
-- User Registration (Employee role)  
-- Secure Login using JWT  
-- Protected Routes  
-- Role-based Access Control (Admin / Employee)  
+Unlike traditional manual or email-based systems, this project provides a smart, automated approach to ticket lifecycle management with role-based access control, real-time status tracking, and AI-driven priority classification.
 
 ---
 
-### 🔹 2. Ticket Management  
+## 📸 System Screenshots
 
-- Create support tickets  
-- View personal tickets (Employee)  
-- View all tickets (Admin)  
-- Update ticket status: **Open → In Progress → Resolved**  
-- Priority levels: Low / Medium / High  
-- Ticket assignment by Admin  
+### 1. Admin Dashboard
+The command center for administrators. Displays real-time metrics, active tickets, and quick actions to manage support requests.
+![Admin Dashboard](docs/screenshots/admin_dashboard.png)
 
----
+### 2. Employee Ticket Creation (with ML Prediction)
+A sleek, accessible interface for employees to log issues. The system automatically analyzes the subject and description to suggest the priority.
+![Employee Ticket View](docs/screenshots/employee_ticket_view.png)
 
-### 🔹 3. Dashboard System  
-
-- Employee Dashboard (personal tickets)  
-- Admin Dashboard (all tickets)  
-- Status-based filtering  
-- Quick statistics overview  
+### 3. Secure Authentication
+Modern, glassmorphism-styled login page ensuring secure access to the platform.
+![Login Page](docs/screenshots/login_page.png)
 
 ---
 
-### 🔹 4. User Interface  
+## ✨ Key Features
 
-- Responsive UI using Tailwind CSS  
-- Form validation (Formik & Yup)  
-- Toast notifications  
-- Loading states for better UX  
-
----
-
-## 🛠️ Tech Stack  
-
-### 🌐 Frontend  
-
-- React 18  
-- Vite  
-- React Router  
-- Axios  
-- Tailwind CSS  
-- Formik & Yup  
-- React Toastify  
+- **Smart Priority Prediction:** Utilizes a local NLP model (`@xenova/transformers`) to automatically predict ticket priority (Low/Medium/High) based on text context.
+- **Robust Authentication:** Secure JWT-based authentication and role-based authorization (Admin vs. Employee).
+- **Ticket Lifecycle Management:** Restricts unauthorized status changes. Features a dedicated "Reopen" workflow for unresolved issues, with admin notifications.
+- **Modern UI/UX:** Responsive, dark-mode focused UI built with Tailwind CSS, featuring subtle animations, skeleton loaders, and intuitive navigation.
+- **Comprehensive Dashboards:** Separate views for employees (tracking personal tickets) and admins (managing global queues).
 
 ---
 
-### ⚙️ Backend  
+## 🧠 Deep Dive: Important Code & Mechanisms
 
-- Node.js  
-- Express.js  
-- MongoDB  
-- Mongoose  
-- JWT (Authentication)  
-- Bcrypt (Password hashing)  
+### 1. ML-Powered Priority Prediction
+To reduce the manual triage burden on support staff, the system uses a local, zero-shot classification model to predict ticket priority. This runs entirely in the Node.js backend using `@xenova/transformers`.
+
+**Location:** `backend/utils/mlPriority.js`
+
+```javascript
+import { pipeline, env } from '@xenova/transformers';
+
+// Uses MobileBERT MNLI for lightweight zero-shot classification
+export async function predictTicketPriority(title, description) {
+  try {
+    const model = await getClassifier();
+    const textToAnalyze = `Ticket Subject: ${title}. Description: ${description}.`;
+    
+    const candidateLabels = [
+      'emergency critical high priority', 
+      'standard normal medium priority', 
+      'trivial minor low priority'
+    ];
+    
+    const result = await model(textToAnalyze, candidateLabels, {
+      hypothesis_template: 'The urgency and severity of this IT helpdesk ticket is {}.'
+    });
+    
+    // Extracts the top scoring label to assign High/Medium/Low automatically
+    const topLabel = result.labels[0];
+    if (topLabel.includes('high priority')) return 'High';
+    if (topLabel.includes('low priority')) return 'Low';
+    return 'Medium';
+  } catch (error) {
+    return 'Medium'; // Fallback
+  }
+}
+```
+
+### 2. Strict Ticket Lifecycle & Reopen Mechanism
+The system enforces strict state transitions. Employees cannot arbitrarily change ticket statuses; only admins can move tickets to "In Progress" or "Resolved". However, if an employee feels an issue was closed prematurely, they can "Reopen" the ticket.
+
+**Location:** `backend/models/Ticket.js`
+
+```javascript
+const ticketSchema = new mongoose.Schema({
+  // ...other fields
+  status: {
+    type: String,
+    enum: ['Open', 'In Progress', 'Resolved', 'Closed'],
+    default: 'Open',
+  },
+  isReopened: {
+    type: Boolean,
+    default: false,
+  },
+  // Tracks the timestamp for SLA monitoring
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+// Middleware to auto-update timestamp on any change
+ticketSchema.pre('save', function(next) {
+  this.updatedAt = Date.now();
+  next();
+});
+```
+When a ticket is reopened, `isReopened` is set to `true`, and the status reverts to `Open`, flagging it heavily in the Admin Dashboard for immediate review.
 
 ---
 
-## ⚙️ System Workflow  
+## 📂 Detailed File Structure
 
-1. Program starts → User registers or logs in  
-2. Employee creates a support ticket  
-3. Ticket is stored in MongoDB database  
-4. Admin views and assigns tickets  
-5. Ticket status updates step-by-step  
-6. Users track progress through dashboard  
-
----
-
-## 📂 Project Structure
-
-``` bash
+```bash
 .
 ├── frontend/                 # React frontend (Vite)
 │   ├── src/
-│   │   ├── components/      # Reusable UI components
-│   │   ├── pages/           # Page-level components
-│   │   ├── services/        # API calls (Axios)
-│   │   ├── context/         # Global state (Auth)
-│   │   ├── utils/           # Helper functions
-│   │   ├── App.jsx          # Main app component
-│   │   └── main.jsx         # Entry point
-│   ├── package.json
+│   │   ├── components/       # Shared UI logic
+│   │   │   ├── Header.jsx           # Global navigation
+│   │   │   ├── ProtectedRoute.jsx   # Role-based route guarding
+│   │   │   ├── SkeletonLoaders.jsx  # Fallback UI while fetching data
+│   │   │   └── TicketCard.jsx       # Card UI for ticket lists
+│   │   ├── pages/            # Main Application Views
+│   │   │   ├── AdminDashboard.jsx   # Global queue & admin controls
+│   │   │   ├── EmployeeDashboard.jsx# Personal ticket tracking
+│   │   │   ├── CreateTicket.jsx     # Form for new tickets
+│   │   │   └── Login.jsx/Register.jsx # Auth flows
+│   │   ├── services/         # Axios API abstraction layer
+│   │   ├── context/          # React Context (AuthContext)
+│   │   ├── utils/            # Shared formatting/validation tools
+│   │   ├── App.jsx           # Router configuration
+│   │   └── main.jsx          # React DOM entry
 │   └── vite.config.js
 │
 └── backend/                  # Node.js + Express backend
-    ├── models/              # MongoDB schemas
-    ├── controllers/         # Business logic
-    ├── routes/              # API endpoints
-    ├── middleware/          # Auth & error handling
-    ├── config/              # DB configuration
-    ├── server.js            # Entry point
-    └── package.json
+    ├── models/               # Mongoose DB Schemas
+    │   ├── User.js              # User profiles & roles
+    │   └── Ticket.js            # Ticket lifecycle tracking
+    ├── controllers/          # Business logic handlers
+    ├── routes/               # Express API endpoints
+    ├── middleware/           # System intermediaries
+    │   └── authMiddleware.js    # JWT verification & role checking
+    ├── utils/                # Helper tools
+    │   └── mlPriority.js        # HuggingFace NLP integration
+    ├── config/               # Database connection setup
+    └── server.js             # Express application entry
 ```
 
 ---
@@ -137,50 +157,49 @@ This project demonstrates real-world concepts of:
 ## 🔌 API Endpoints  
 
 ### 🔑 Authentication  
-
-- POST /api/auth/register  
-- POST /api/auth/login  
-- GET /api/auth/me  
-
----
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Register a new user |
+| POST | `/api/auth/login` | Authenticate and receive JWT |
+| GET | `/api/auth/me` | Fetch current user profile |
 
 ### 🎟️ Tickets  
-
-- POST /api/tickets  
-- GET /api/tickets  
-- GET /api/tickets/:id  
-- PUT /api/tickets/:id  
-- DELETE /api/tickets/:id  
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|--------|
+| POST | `/api/tickets` | Create a new ticket (ML analyzed) | All |
+| GET | `/api/tickets` | Get all tickets | Admin |
+| GET | `/api/tickets/my-tickets` | Get user's created tickets | Employee |
+| GET | `/api/tickets/:id` | Get single ticket details | All |
+| PUT | `/api/tickets/:id` | Update status/priority | Admin |
+| DELETE| `/api/tickets/:id` | Remove a ticket | Admin |
 
 ---
 
-## 📦 Installation & Usage  
+## 🛠️ Tech Stack  
+
+**Frontend:** React 18, Vite, React Router, Axios, Tailwind CSS, Formik & Yup, React Toastify.  
+**Backend:** Node.js, Express.js, MongoDB (Atlas), Mongoose, JWT, Bcrypt, `@xenova/transformers`.  
+
+---
+
+## 📦 Setup & Installation  
 
 ### 🔧 Prerequisites  
-
-- Node.js  
-- MongoDB  
-
----
-
-### 🧩 Clone Repository  
-
-```bash
-git clone <your-repo-link>
-cd Corporate-Ticketing-System
-```
-
----
+- Node.js (v18+ recommended)  
+- MongoDB connection string  
 
 ### ⚙️ Backend Setup  
 
 ```bash
 cd backend
 npm install
+
+# Create a .env file based on provided values
+# Required: PORT, MONGODB_URI, JWT_SECRET, JWT_EXPIRE
+
 npm run dev
 ```
-
-Backend will run on `http://localhost:5050`
+*Note: The first time the backend starts, it will download the ML model (~100MB) required for priority predictions.*
 
 ### 🌐 Frontend Setup  
 
@@ -189,15 +208,9 @@ cd frontend
 npm install
 npm run dev
 ```
+*Access the application at `http://localhost:5173`*
 
-### Backend (.env)
-```
-PORT=5050
-MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-host>/helpdesk?retryWrites=true&w=majority
-JWT_SECRET=your_jwt_secret_key
-JWT_EXPIRE=7d
-NODE_ENV=development
-```
+---
 
 ## 👥 Team Members (SRM University AP)  
 
@@ -207,62 +220,3 @@ NODE_ENV=development
 | Om Mittal        | AP24110010404    |
 | Piyush Raj       | AP24110010439    |
 | Suryansh Kumar   | AP24110010446    |
-
----
-
-## 📝 Conclusion  
-
-This project demonstrates a real world full stack system with secure authentication, structured backend, and efficient ticket handling.  
-
----
-
-## 🔥 Summary  
-
-### Backend
-- Node.js
-- Express.js
-- MongoDB Atlas
-- Mongoose
-- JWT
-- Bcrypt
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `GET /api/auth/me` - Get current user
-
-### Tickets
-- `POST /api/tickets` - Create ticket
-- `GET /api/tickets` - Get all tickets (admin) or my tickets
-- `GET /api/tickets/:id` - Get single ticket
-- `PUT /api/tickets/:id` - Update ticket
-- `DELETE /api/tickets/:id` - Delete ticket
-- `GET /api/tickets/my-tickets` - Get user's tickets
-
-### Ticket Updates
-- `POST /api/ticket-updates/:ticketId` - Add update to ticket
-- `GET /api/ticket-updates/:ticketId` - Get ticket updates
-
-## Next Steps
-
-1. Install dependencies in both frontend and backend
-2. Create a MongoDB Atlas cluster and database user
-3. Put the Atlas connection string into `backend/.env`
-4. Start backend server: `npm run dev` in backend folder
-5. Start frontend dev server: `npm run dev` in frontend folder
-6. Access the application at `http://localhost:3000`
-
-## Default Test Accounts
-
-After setup, register new accounts through the application UI.
-
-## Optional Enhancements
-
-- Email notifications
-- File attachments
-- Advanced filtering & pagination
-- Admin analytics dashboard
-- User profile management
-- Email verification
