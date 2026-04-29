@@ -22,15 +22,15 @@ Unlike traditional manual or email-based systems, this project provides a smart,
 
 ### 1. Admin Dashboard
 The command center for administrators. Displays real-time metrics, active tickets, and quick actions to manage support requests.
-![Admin Dashboard](docs/screenshots/admin_dashboard.png)
+![Admin Dashboard](docs/screenshots/admin%20dashboard.png)
 
 ### 2. Employee Ticket Creation (with ML Prediction)
 A sleek, accessible interface for employees to log issues. The system automatically analyzes the subject and description to suggest the priority.
-![Employee Ticket View](docs/screenshots/employee_ticket_view.png)
+![Employee Ticket View](docs/screenshots/ticket%20creation.png)
 
 ### 3. Secure Authentication
 Modern, glassmorphism-styled login page ensuring secure access to the platform.
-![Login Page](docs/screenshots/login_page.png)
+![Login Page](docs/screenshots/sigin%20page.png)
 
 ---
 
