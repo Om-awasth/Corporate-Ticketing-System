@@ -1,4 +1,4 @@
-# 📘 Corporate Helpdesk Ticketing System  
+# Corporate Helpdesk Ticketing System
 
 A Full-Stack MERN Application for Managing IT Support Tickets  
 
@@ -180,7 +180,7 @@ npm install
 npm run dev
 ```
 
----
+Backend will run on `http://localhost:5050`
 
 ### 🌐 Frontend Setup  
 
@@ -190,7 +190,14 @@ npm install
 npm run dev
 ```
 
----
+### Backend (.env)
+```
+PORT=5050
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-host>/helpdesk?retryWrites=true&w=majority
+JWT_SECRET=your_jwt_secret_key
+JWT_EXPIRE=7d
+NODE_ENV=development
+```
 
 ## 👥 Team Members (SRM University AP)  
 
@@ -211,7 +218,51 @@ This project demonstrates a real world full stack system with secure authenticat
 
 ## 🔥 Summary  
 
-- MERN stack project  
-- JWT-based authentication  
-- Role based system  
-- Ticket lifecycle management  
+### Backend
+- Node.js
+- Express.js
+- MongoDB Atlas
+- Mongoose
+- JWT
+- Bcrypt
+
+## API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
+- `GET /api/auth/me` - Get current user
+
+### Tickets
+- `POST /api/tickets` - Create ticket
+- `GET /api/tickets` - Get all tickets (admin) or my tickets
+- `GET /api/tickets/:id` - Get single ticket
+- `PUT /api/tickets/:id` - Update ticket
+- `DELETE /api/tickets/:id` - Delete ticket
+- `GET /api/tickets/my-tickets` - Get user's tickets
+
+### Ticket Updates
+- `POST /api/ticket-updates/:ticketId` - Add update to ticket
+- `GET /api/ticket-updates/:ticketId` - Get ticket updates
+
+## Next Steps
+
+1. Install dependencies in both frontend and backend
+2. Create a MongoDB Atlas cluster and database user
+3. Put the Atlas connection string into `backend/.env`
+4. Start backend server: `npm run dev` in backend folder
+5. Start frontend dev server: `npm run dev` in frontend folder
+6. Access the application at `http://localhost:3000`
+
+## Default Test Accounts
+
+After setup, register new accounts through the application UI.
+
+## Optional Enhancements
+
+- Email notifications
+- File attachments
+- Advanced filtering & pagination
+- Admin analytics dashboard
+- User profile management
+- Email verification
